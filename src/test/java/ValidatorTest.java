@@ -25,22 +25,23 @@ public class ValidatorTest {
 
     @Test
     public void isPasswordValid() {
-
         assertFalse(Validator.isPasswordValid(null));
         // Cyrillic chars, forbidden chars, space
         assertFalse(Validator.isPasswordValid("jds glj324jапр!?&*#$"));
-        // Cyrillic chars
-        assertFalse(Validator.isPasswordValid("jdsАБВГ"));
         // Checks password length
         assertFalse(Validator.isPasswordValid("1234567"));
         assertTrue(Validator.isPasswordValid("12345678"));
         assertTrue(Validator.isPasswordValid("01234567890123456789"));
         assertFalse(Validator.isPasswordValid("012345678901234567890"));
-        // Checks latin chars
-        assertTrue(Validator.isPasswordValid("abcdefghijklmno"));
-        assertTrue(Validator.isPasswordValid("pqrstuvwxyz"));
-        assertTrue(Validator.isPasswordValid("ABCDEFGHIJKLMNO"));
-        assertTrue(Validator.isPasswordValid("PQRSTUVWXYZ"));
-
+        // Allowed chars test
+        String allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?&";
+        for (int i = 0; i < allowedChars.length(); i++) {
+            assertTrue(Validator.isPasswordValid("testallowed" + allowedChars.charAt(i)));
+        }
+        // Forbidden chars test
+        String forbiddenChars = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЫЪЭЮЯ абвгдеёжзиклмнопрстуфхцчшщыьъэюя*#$";
+        for (int i = 0; i < forbiddenChars.length(); i++) {
+            assertFalse(Validator.isPasswordValid("testforbidden" + forbiddenChars.charAt(i)));
+        }
     }
 }
